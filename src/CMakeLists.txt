@@ -73,15 +73,27 @@ TARGETS
 RUNTIME DESTINATION
   bin
 )
-
+if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
 # Install shared object
 install(
 TARGETS
   ${DMTESTLIB_NAME}
-LIBRARY DESTINATION
-  lib/
-)
 
+
+LIBRARY ARCHIVE DESTINATION
+lib/ 
+)
+else()
+# Install shared object
+install(
+TARGETS
+  ${DMTESTLIB_NAME}
+
+
+LIBRARY DESTINATION
+lib/
+)
+endif( )
 # Install header files
 install(
 FILES
