@@ -8,7 +8,7 @@ SET(CMAKE_RC_COMPILER i686-w64-mingw32-windres)
 
 
 # where is the target environment 
-SET(CMAKE_FIND_ROOT_PATH  /usr/i686-w64-mingw32 /home/doctype_compile/mingw-install )
+SET(CMAKE_FIND_ROOT_PATH  /usr/i686-w64-mingw32 /usr/i686-w64-mingw32/sys-root/mingw  )
 
 # search for programs in the build host directories
 SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
