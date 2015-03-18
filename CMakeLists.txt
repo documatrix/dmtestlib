@@ -40,6 +40,17 @@ if( NOT ${VAPIDIRS} STREQUAL "" )
     set( VAPIDIRS_ARGS ${VAPIDIRS_ARGS} "--vapidir=${VAPIDIR}" )
   endforeach ( VAPIDIR )
 endif()
+set( LIBS )
+foreach( PKGLIB ${DEPS_LIBRARIES} )
+  find_library( _LIB_${PKGLIB} ${PKGLIB} PATHS ${DEPS_LIBRARY_DIRS})
+  list( APPEND LIBS ${_LIB_${PKGLIB}} )
+endforeach( PKGLIB )
+
+add_definitions (${DEPS_CFLAGS})
+link_directories ( ${DEPS_LIBRARY_DIRS} )
+message( "link_libraries: ${LIBS}" )
+link_libraries ( ${LIBS} )
+
 
 add_subdirectory(src)
 add_subdirectory(doc)
