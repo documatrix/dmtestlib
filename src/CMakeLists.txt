@@ -32,7 +32,7 @@ CUSTOM_VAPIS
 GENERATE_HEADER
   dmtestlib
 OPTIONS
-  --thread -g
+  --thread -g ${CMAKE_VALA_OPTS} ${VAPIDIRS_ARGS}
 )
 
 vala_precompile(TRV_VALA_C
