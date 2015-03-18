@@ -48,7 +48,6 @@ endforeach( PKGLIB )
 
 add_definitions (${DEPS_CFLAGS})
 link_directories ( ${DEPS_LIBRARY_DIRS} )
-message( "link_libraries: ${LIBS}" )
 link_libraries ( ${LIBS} )
 
 
