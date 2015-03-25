@@ -28,7 +28,7 @@ linux: build copy_files
 	cd build && cmake . ${CMAKE_OPTS} && make
 
 windows: build copy_files
-	cd build && cmake . -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw32.cmake ${CMAKE_OPT} && make
+	cd build && cmake . -DCMAKE_TOOLCHAIN_FILE=../cmake/Toolchain-mingw32.cmake ${CMAKE_OPTS} && make
 
 install: build
 	cd build && make install
