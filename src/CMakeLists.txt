@@ -52,12 +52,19 @@ add_executable(
 )
 
 # CREATE PKGCONFIG FILES
+if(NOT DEFINED CMAKE_INSTALL_BINDIR)
+  set(CMAKE_INSTALL_BINDIR bin)
+endif(NOT DEFINED CMAKE_INSTALL_BINDIR)
 if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
   set(CMAKE_INSTALL_LIBDIR lib)
 endif(NOT DEFINED CMAKE_INSTALL_LIBDIR)
 set(prefix       ${CMAKE_INSTALL_PREFIX})
 set(exec_prefix ${CMAKE_INSTALL_PREFIX})
-set(libdir       ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+  set(libdir       ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR})
+else()
+  set(libdir       ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+endif()
 set(includedir  ${CMAKE_INSTALL_PREFIX}/include)
 set(LIBS         "")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libdmtestlib.pc.in
@@ -71,26 +78,23 @@ RUNTIME DESTINATION
   bin
 )
 if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
-# Install shared object
-install(
-TARGETS
-  ${DMTESTLIB_NAME}
-
-
-LIBRARY ARCHIVE DESTINATION
-lib/ 
-)
+  # Install dll object
+  install(
+    TARGETS
+      ${DMTESTLIB_NAME}
+    DESTINATION
+      bin/
+    )
 else()
-# Install shared object
-install(
-TARGETS
-  ${DMTESTLIB_NAME}
-
-
-LIBRARY DESTINATION
-lib/
-)
+  # Install shared object
+  install(
+    TARGETS
+      ${DMTESTLIB_NAME}
+    LIBRARY DESTINATION
+    lib/
+  )
 endif( )
+
 # Install header files
 install(
 FILES
