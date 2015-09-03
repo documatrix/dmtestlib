@@ -226,11 +226,12 @@ namespace Testlib
 
     try
     {
-      GLib.Regex regex = new GLib.Regex( "^\\s*%!\\s*PS" );
+      GLib.Regex ps_regex = new GLib.Regex( "^\\s*%!\\s*PS" );
+      GLib.Regex xrx_regex = new GLib.Regex( "^\\s*%XRXbegin" );
 
-      /* In der ersten Zeile muss ein %!PS stehen */
+      /* In der ersten Zeile muss ein %!PS oder %XRXbegin stehen */
       GLib.assert( line != null );
-      GLib.assert( regex.match( line ) );
+      GLib.assert( ps_regex.match( line ) || xrx_regex.match( line ) );
     }
     catch( Error e )
     {
