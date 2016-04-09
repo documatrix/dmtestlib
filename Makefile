@@ -1,7 +1,7 @@
 CP=cp -u -r -p
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
-  CP=rsync -u
+  CP=rsync -au
 endif
 
 CMAKE_PREFIX=
