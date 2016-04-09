@@ -1,3 +1,8 @@
+CP=cp -u -r -p
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  CP=rsync -u
+endif
 
 CMAKE_PREFIX=
 ifeq "${MAKECMDGOALS}" "windows"
@@ -22,10 +27,10 @@ CMAKE_OPTS=${CMAKE_PREFIX} -DCMAKE_VALA_OPTS=${CMAKE_VALA_OPTS} -DVAPIDIRS=${VAP
 all: linux
 
 copy_files:
-	cp -u -r -p cmake build/
-	cp -u -r -p doc build/
-	cp -u -r -p src build/
-	cp -u -r -p CMakeLists.txt build/
+	${CP} cmake build/
+	${CP} doc build/
+	${CP} src build/
+	${CP} CMakeLists.txt build/
 	find build/ -name CMakeCache.txt -delete
 
 linux: build copy_files
