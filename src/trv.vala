@@ -4,7 +4,6 @@ public class TestResultViewer
 {
   public static const string PRODUCT_NAME       = "TRV - Test Result Viewer";
   public static const string PRODUCT_VERSION    = "1.0.1";
-  public static const double MAXIMUM_TEST_TIME  = 0.005;
 
 
   // Das zu interpretierende result xml
@@ -19,12 +18,17 @@ public class TestResultViewer
   // flag ob bei fehlgeschlagenen Tests auch die Fehlermeldung mit ausgegeben werden soll
   static bool print_detailed_error  = false;
 
+  /**
+   * The maximum test time. If the runtime of a tests was longer than this value, a warning will be output.
+   */
+  static double maximum_test_time = 1.0;
 
   const OptionEntry[] entries = {
     { "infile", 'i', 0, OptionArg.STRING, ref result_xml, "Filename of the result XML", "Result XML" },
     { "version", 'v', 0, OptionArg.NONE, ref print_version, "Print Version", null },
     { "failed-only", 'f', 0, OptionArg.NONE, ref print_failed_only, "Print only failed tests", null },
     { "detail", 'd', 0, OptionArg.NONE, ref print_detailed_error, "Print error messages", null },
+    { "max-time", 'm', 0, OptionArg.DOUBLE, ref maximum_test_time, "Maximum test time", null },
     { null }
   };
 
@@ -60,7 +64,7 @@ public class TestResultViewer
       terminate( 25, "No valid result XML given! '%s'".printf( result_xml ?? "null" ) );
     }
 
-    ResultPrinter rp = new ResultPrinter( result_xml, &return_value, print_failed_only, print_detailed_error );
+    ResultPrinter rp = new ResultPrinter( result_xml, &return_value, print_failed_only, print_detailed_error, maximum_test_time );
 
     if( ! rp.read( ) )
     {
@@ -101,6 +105,11 @@ public class ResultPrinter
   // oder nicht (false)
   public bool print_detailed_error;
 
+  /**
+   * The maximum test time. If the runtime of a tests was longer than this value, a warning will be output.
+   */
+  public double maximum_test_time = 1.0;
+
   // Diese 3 Variablen werden verwendet um mit zu zählen wie viele Tests gesamt fehlgeschlagen, gut gegangen
   // oder in ein Overtime gelaufen sind
   private uint64 failed = 0;
@@ -111,13 +120,21 @@ public class ResultPrinter
   // bei Erfolg muss nichts gesetzt werden, da der default Wert 0 ist
   private int* return_value;
 
-
-  public ResultPrinter( string filename, int* return_value, bool print_failed_only = false, bool print_detailed_error = false )
+  /**
+   * Creates a new ResultPrinter.
+   * @param filename The result XML filename.
+   * @param return_value The return value.
+   * @param print_failed_only Determines if failed tests should be printed only.
+   * @param print_detailed_error Determines if detailed error messages should be printed.
+   * @param maximum_test_time The maximum test time.
+   */
+  public ResultPrinter( string filename, int* return_value, bool print_failed_only = false, bool print_detailed_error = false, double maximum_test_time = 1.0 )
   {
     this.filename             = filename;
     this.return_value         = return_value;
     this.print_failed_only    = print_failed_only;
     this.print_detailed_error = print_detailed_error;
+    this.maximum_test_time    = maximum_test_time;
   }
 
 
@@ -186,7 +203,7 @@ public class ResultPrinter
           // Prüfen ob die maximal erlaubte Testzeit überschritten wurde
           double tmp_duration = double.parse( testcase.duration );
 
-          if( tmp_duration > TestResultViewer.MAXIMUM_TEST_TIME )
+          if ( tmp_duration > this.maximum_test_time )
           {
             this.warn( testcase );
           }
