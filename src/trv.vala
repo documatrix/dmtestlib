@@ -282,7 +282,14 @@ public class ResultPrinter
 
           if( attr_name == "result" )
           {
-            testcase.passed = attr_content == "success";
+            if( ( GLib.Version.check( 2, 54 ) == null ) && ( GLib.Version.check( 2, 57, 2 ) != null ) )
+            {
+              testcase.passed = attr_content != "success";
+            }
+            else
+            {
+              testcase.passed = attr_content == "success";
+            }
           }
           else if( attr_name == "exit-status" )
           {
