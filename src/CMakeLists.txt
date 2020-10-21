@@ -76,12 +76,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libdmtestlib.pc.in
 
 # Install test result viewer
 if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
-install(
-TARGETS
-  trv
-RUNTIME DESTINATION
-  bin
-)
+  install(
+  TARGETS
+    trv
+  RUNTIME DESTINATION
+    bin
+  )
 endif()
 if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   # Install dll object
