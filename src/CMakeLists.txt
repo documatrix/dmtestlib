@@ -92,7 +92,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
       bin/
     )
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
-# Install shared object
+  # Install shared object
   install(
     TARGETS
       ${DMTESTLIB_NAME}
