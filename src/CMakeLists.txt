@@ -33,14 +33,14 @@ OPTIONS
 )
 
 if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
-vala_precompile(TRV_VALA_C
-  ${TRV_SOURCES}
-PACKAGES
-  ${VALA_PACKAGES}
-  libxml-2.0
-OPTIONS
-  --thread -g
-)
+  vala_precompile(TRV_VALA_C
+    ${TRV_SOURCES}
+  PACKAGES
+    ${VALA_PACKAGES}
+    libxml-2.0
+  OPTIONS
+    --thread -g
+  )
 endif()
 
 add_library(
