@@ -97,7 +97,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
     TARGETS
       ${DMTESTLIB_NAME}
     LIBRARY DESTINATION
-    lib/
+      lib/
     ARCHIVE DESTINATION
     lib/
   )
