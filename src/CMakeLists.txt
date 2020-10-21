@@ -49,10 +49,10 @@ add_library(
 )
 
 if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
-add_executable(
-  trv
-  ${TRV_VALA_C}
-)
+  add_executable(
+    trv
+    ${TRV_VALA_C}
+  )
 endif()
 
 # CREATE PKGCONFIG FILES
