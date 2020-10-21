@@ -99,7 +99,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
     LIBRARY DESTINATION
       lib/
     ARCHIVE DESTINATION
-    lib/
+      lib/
   )
 else()
   # Install shared object
