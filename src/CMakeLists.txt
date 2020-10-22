@@ -32,24 +32,28 @@ OPTIONS
   --thread -g ${CMAKE_VALA_OPTS} ${VAPIDIRS_ARGS}
 )
 
-vala_precompile(TRV_VALA_C
-  ${TRV_SOURCES}
-PACKAGES
-  ${VALA_PACKAGES}
-  libxml-2.0
-OPTIONS
-  --thread -g
-)
+if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
+  vala_precompile(TRV_VALA_C
+    ${TRV_SOURCES}
+  PACKAGES
+    ${VALA_PACKAGES}
+    libxml-2.0
+  OPTIONS
+    --thread -g
+  )
+endif()
 
 add_library(
   ${DMTESTLIB_NAME} SHARED
   ${DMTESTLIB_VALA_C}
 )
 
-add_executable(
-  trv
-  ${TRV_VALA_C}
-)
+if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
+  add_executable(
+    trv
+    ${TRV_VALA_C}
+  )
+endif()
 
 # CREATE PKGCONFIG FILES
 if(NOT DEFINED CMAKE_INSTALL_BINDIR)
@@ -71,12 +75,14 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libdmtestlib.pc.in
   ${CMAKE_CURRENT_BINARY_DIR}/${DMTESTLIB_NAME}.pc @ONLY)
 
 # Install test result viewer
-install(
-TARGETS
-  trv
-RUNTIME DESTINATION
-  bin
-)
+if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
+  install(
+  TARGETS
+    trv
+  RUNTIME DESTINATION
+    bin
+  )
+endif()
 if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
   # Install dll object
   install(
@@ -85,6 +91,16 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
     DESTINATION
       bin/
     )
+elseif(${CMAKE_SYSTEM_NAME} STREQUAL Emscripten)
+  # Install shared object
+  install(
+    TARGETS
+      ${DMTESTLIB_NAME}
+    LIBRARY DESTINATION
+      lib/
+    ARCHIVE DESTINATION
+      lib/
+  )
 else()
   # Install shared object
   install(
